@@ -36,46 +36,37 @@
         </form>
       </div>
     </div>
+    <script src="./js/http.js"></script>
     <script>
       $(function() {
-        $(".login_form").submit(function(e) {
-          e.preventDefault();
-          const input_txt = $(".input_txt")
-            .val()
-            .trim();
-          const input_pass = $(".input_pass")
-            .val()
-            .trim();
-          if (input_txt === "" && input_pass === "") {
-            alert("请输入账户和密码");
-            return;
-          }
-          // console.log(input_txt);
-          // console.log(input_pass);
-
-          $.ajax({
-            type: "post",
-            // url: "http://192.168.77.78:8080/api/v1/admin/user/login",
-            url: "http://localhost:8080/api/v1/admin/user/login",
-            data: {
-              username: input_txt,
-              password: input_pass
-            },
-            dataType: "json",
-            success: function(response) {
-              const code = response.code;
-              const msg = response.msg;
-              const token = response.token;
-
-              if (code === 200) {
-                alert(msg);
-                location.href = "./index.html";
-              } else {
-                alert(msg);
-              }
+       // 登陆
+       $('.input_sub').on('click',function(){
+        const  input_txt = $('.input_txt').val().trim()
+        const  input_pass = $('.input_pass').val().trim()
+//异步
+        $.ajax({
+          type: "post",
+          url: BigNew.user_login,
+          data: {
+            username:input_txt,
+            password:input_pass
+          },
+          success: function (response) {
+            if(response.code === 200){
+              //本地缓存
+              localStorage.setItem('token',response.token)
+              location.href = './index.html'
             }
-          });
+            console.log(response.msg);
+          }
         });
+        
+
+
+
+ return false
+       })
+
       });
     </script>
   </body>
