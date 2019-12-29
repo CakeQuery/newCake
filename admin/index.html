@@ -38,19 +38,19 @@
         </div>
         <ul class="level02">
           <li>
-            <a href="#" target="main_frame"
+            <a href="article_list.html" target="main_frame"
               ><i class="iconfont icon-previewright"></i
               ><span>文章列表</span></a
             >
           </li>
           <li>
-            <a href="#" target="main_frame"
+            <a href="article_release.html" target="main_frame"
               ><i class="iconfont icon-previewright"></i
               ><span>发表文章</span></a
             >
           </li>
           <li>
-            <a href="#" target="main_frame"
+            <a href="article_category.html" target="main_frame"
               ><i class="iconfont icon-previewright"></i
               ><span>文章类别管理</span></a
             >
@@ -58,7 +58,7 @@
         </ul>
 
         <div class="level01">
-          <a href="#" target="main_frame"
+          <a href="comment_list.html" target="main_frame"
             ><i class="iconfont icon-comment"></i><span>评论管理</span></a
           >
         </div>
@@ -98,9 +98,31 @@
         success: function(response) {
           if (response.code === 200) {
             //   图片和名字渲染
-            $(".user_info img,.user_center_link img").attr("src", response.data.userPic);
+            $(".user_info img,.user_center_link img").attr(
+              "src",
+              response.data.userPic
+            );
             $(".user_info span").html(response.data.nickname);
           }
+        }
+      });
+
+      //左边事件集
+      let on_off = true;
+      $(".menu").on("click", "div", function() {
+        $(this)
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
+        console.log(on_off);
+        if ($(this).index() === 1 && on_off) {
+          console.log("成功");
+          $(".level02").slideDown(1000);
+          on_off = false;
+        } else {
+          console.log("失败");
+          $(".level02").slideUp(1000);
+          on_off = true;
         }
       });
     });
