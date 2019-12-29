@@ -138,6 +138,21 @@
       $(".user_pic").attr("src", url);
     });
 
+
     
+    //修改事件
+    $('.btn-success').on('click',function(){
+        $.ajax({
+            type: "post",
+            url: BigNew.user_edit,
+            data: new FormData($('.form-horizontal')[0]),
+            contentType:false,
+            processData:false,
+            success: function (response) {
+                console.log(response.msg);
+                
+            }
+        });
+    })
   </script>
 </html>
