@@ -1,134 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>文章类别管理</title>
-    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/iconfont.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <script src="./libs/jquery-1.12.4.min.js"></script>
     <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
     <!-- 引入模板引擎js文件 -->
     <script src="./libs/template-web.js"></script>
-</head>
+    <style>
+      .widbai {
+        width: 100%;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
     <div class="container-fluid">
-        <div class="common_title">
-            文章类别管理
-        </div>
-        <div class="container-fluid common_con">
-            <table class="table table-striped table-bordered table-hover mp20 category_table">
-                <thead>
-                    <tr>
-                        <th>名称</th>
-                        <th>Slug</th>
-                        <th class="text-center" width="100">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>奇趣事</td>
-                        <td>funny</td>
-                        <td class="text-center">
-                            <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:void(0)" class="btn btn-danger btn-xs">删除</a>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-center">
-                            <a class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
-                                data-target="#myModal">新增分类</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+      <div class="common_title">
+        文章类别管理
+      </div>
+      <div class="container-fluid common_con">
+        <table
+          class="table table-striped table-bordered table-hover mp20 category_table"
+        >
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>Slug</th>
+              <th class="text-center" width="100">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>奇趣事</td>
+              <td>funny</td>
+              <td class="text-center">
+                <a
+                 
+                  data-toggle="modal"
+                  class=" btn btn-info btn-xs"
+                  >编辑</a
+                >
+                <a class="btn btn-danger btn-xs"
+                  >删除</a
+                >
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-center">
+                <a
+                  class="btn btn-success"
+                  id="xinzengfenlei"
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  >新增分类</a
+                >
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
-    
-<!-- 新增按钮模态 -->
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+
+    <!-- 新增按钮模态 -->
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
     Launch demo modal
   </button> -->
-  
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-        </div>
-        <!-- 新增表单 -->
-       <form action="" id="newzen">
-        <div class="input-group input-group-lg">
-            分类名称
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
-          </div>
-          <div class="input-group input-group-lg">
-            分类别名
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
-          </div>
-        </form>
-            <!-- 新增表单 -->
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary newcake">新增</button>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <!-- 新增表单 -->
+          <form action="" id="newzen">
+            <div class="input-group input-group-lg widbai">
+              <input
+                type="text"
+                class="form-control"
+                id="systematic_name"
+                placeholder="分类名称"
+                aria-describedby="sizing-addon1"
+              />
+            </div>
+            <br />
+            <div class="input-group input-group-lg widbai">
+              <input
+                type="text"
+                class="form-control"
+                id="Classification_alias"
+                placeholder="分类别名"
+                aria-describedby="sizing-addon1"
+              />
+            </div>
+          </form>
+          <!-- 新增表单 -->
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              取消
+            </button>
+            <button type="button" class="btn newcake">新增</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-<!-- 新增按钮模态 -->
+    <!-- 新增按钮模态 -->
+  </body>
+  <script src="./js/http.js"></script>
+  <script type="text/html" id="party">
+    {{each data}}  <tr>
+          <td>{{data[$index].name}}</td>
+          <td>{{data[$index].slug}}</td>
+          <td class="text-center">
+              <a  data-id={{$value.id}} data-toggle="modal" class=" btn btn-info btn-xs" data-target="#myModal">编辑</a>
+              <a data-id={{$value.id}} class="btn btn-danger btn-xs">删除</a>
+          </td>
+      </tr>
+      {{/each}}
+  </script>
+  <script>
+    $(function() {
+      const initial_with = function(){
+        // 页面初始渲染
+        $.ajax({
+          type: "get",
+          url: BigNew.category_list,
+          success: function(response) {
+            const list = template("party", response);
+            //   console.log(list);
+            $("tbody").html(list);
+          }
+        });
+      }
+      initial_with()
 
 
-</body>
-<script src="./js/http.js"></script>
-<script type="text/html" id="party">
-  {{each data}}  <tr>
-        <td>{{data[$index].name}}</td>
-        <td>{{data[$index].slug}}</td>
-        <td class="text-center">
-            <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
-            <a href="javascript:void(0)" class="btn btn-danger btn-xs">删除</a>
-        </td>
-    </tr>
-    {{/each}}
-</script>
-<script>
-
-
-$(function(){
-// 页面初始渲染
-$.ajax({
-    type: "get",
-    url: BigNew.category_list,
-    success: function (response) {
-      const list =   template('party',response)
-    //   console.log(list);
-      $('tbody').html(list)
-        
-    }
-});
-
-//新增
-$('.newcake').on('click',function(){
-
-      $('.modal-body').each(function(){
-          console.log($(this).html());
-          
-      })
     
-})
-    //刹!!
-})
+    // 2个点击同时是模态
+    $('#myModal').on('shown.bs.modal', function (e) {
+       const modalbtn = $(e.relatedTarget).html()
+      //  console.log(modalbtn);
+       $('.newcake').html(modalbtn)
+       console.log(modalbtn);
+       
+  if(modalbtn ==='编辑'){
+     $('.newcake').addClass('btn-info');
+     $('.newcake').removeClass('btn-success')
+     // 当前点击的id
+   const compile_id =  +($(e.relatedTarget).attr('data-id'))
+   
+   $('.newcake').on('click',function(){
+      //获取输入框的值
+    const systematic_name = $('#systematic_name').val()
+    const Classification_alias = $('#Classification_alias').val()
 
-</script>
+   
+    $.ajax({
+      type: "post",
+      // url:'http://localhost:8080/api/v1/admin/category/edit',
+      url:BigNew.category_edit,
+      data: {
+        id:compile_id,
+        name:systematic_name,
+        slug:Classification_alias
+      },
+      success: function (response) {
+      //  alert(response.msg);
+      //关闭模态框
+       $('#myModal').modal('hide')
+       // 重新渲染
+       initial_with()
+
+       //清空模态里面的值
+       $('#systematic_name').val('')
+       $('#Classification_alias').val('')
+      }
+    });
+   
+  
+  })
+     
+  }else if(modalbtn==='新增分类'){
+    $('.newcake').removeClass('btn-info');
+     $('.newcake').addClass('btn-success')
+         //新增
+         $(".newcake").on("click", function() {
+        const systematic = $("#systematic_name").val();
+        const classification = $("#Classification_alias").val();
+        console.log(systematic);
+        console.log(classification);
+        
+        console.log(e);
+        $.ajax({
+          type: "post",
+          url: BigNew.category_add,
+          data: {
+            name:systematic,
+            slug:classification
+          },
+          success: function (response) {
+          //关闭模态框
+          $('#myModal').modal('hide')
+       // 重新渲染
+       initial_with()
+       // 清空模态的值
+       $('#systematic_name').val('')
+       $('#Classification_alias').val('')
+          }
+        });
+      });
+  }
+
+})
+    
+    
+    
+      //刹!!
+    });
+  </script>
 </html>
