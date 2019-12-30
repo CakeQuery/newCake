@@ -128,13 +128,13 @@
         $(".user_pic").attr("src", response.data.userPic);
       }
     });
-
+let url;
     //点击修改图片
     $("#exampleInputFile").on("change", function() {
       const file = this.files[0];
       // 将文件变成二进制大对象
       console.log(URL.createObjectURL(file));
-      const url = URL.createObjectURL(file);
+     url = URL.createObjectURL(file);
       $(".user_pic").attr("src", url);
     });
 
@@ -149,7 +149,10 @@
             contentType:false,
             processData:false,
             success: function (response) {
-            
+            // parent.window.location.reload()
+            //修改父页面图片和文本跟新
+            parent.$('.user_info img,.user_center_link img').attr('src',url)
+            parent.$('.user_info span').html($('#inputEmail2').val())
             }
         });
         return false

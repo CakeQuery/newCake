@@ -417,6 +417,9 @@ body{
     height:200px;
     margin-bottom:10px;
 }
+.modal-body{
+    border: 1px solid #0a0;
+}
 
 
 

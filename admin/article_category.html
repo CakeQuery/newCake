@@ -43,7 +43,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="3" class="text-center">
-                            <a href="javascript:void(0)" class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
+                            <a class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
                                 data-target="#myModal">新增分类</a>
                         </td>
                     </tr>
@@ -51,6 +51,45 @@
             </table>
         </div>
     </div>
+    
+<!-- 新增按钮模态 -->
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <!-- 新增表单 -->
+       <form action="" id="newzen">
+        <div class="input-group input-group-lg">
+            分类名称
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+          </div>
+          <div class="input-group input-group-lg">
+            分类别名
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+          </div>
+        </form>
+            <!-- 新增表单 -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary newcake">新增</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- 新增按钮模态 -->
+
+
+</body>
 <script src="./js/http.js"></script>
 <script type="text/html" id="party">
   {{each data}}  <tr>
@@ -67,7 +106,7 @@
 
 
 $(function(){
-
+// 页面初始渲染
 $.ajax({
     type: "get",
     url: BigNew.category_list,
@@ -79,7 +118,15 @@ $.ajax({
     }
 });
 
+//新增
+$('.newcake').on('click',function(){
 
+      $('.modal-body').each(function(){
+          console.log($(this).html());
+          
+      })
+    
+})
     //刹!!
 })
 
