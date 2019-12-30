@@ -155,108 +155,111 @@
 
       // 2个点击同时是模态
       $("#myModal").on("shown.bs.modal", function(e) {
+        const thisId = $(e.relatedTarget);
         const modalbtn = $(e.relatedTarget).html();
         //  console.log(modalbtn);
         $(".newcake").html(modalbtn);
-        console.log(modalbtn);
+        // console.log(modalbtn);
 
         if (modalbtn === "编辑") {
           $(".newcake").addClass("btn-info");
           $(".newcake").removeClass("btn-success");
-          // 当前点击的id
-          const compile_id = +$(e.relatedTarget).attr("data-id");
+          //  给编辑的模态框赋值
+          $("#systematic_name").val(
+            thisId
+              .parents("tr")
+              .find("td")
+              .eq(0)
+              .html()
+          );
+          $("#Classification_alias").val(
+            thisId
+              .parents("tr")
+              .find("td")
+              .eq(1)
+              .html()
+          );
+          $(".newcake").attr("data-id", thisId.attr("data-id"));
           // 编辑事件 函数
-          const bianji = function() {
-            //移除编辑事件函数
-            $(".newcake").off("click", bianji);
-            //获取输入框的值
-            const systematic_name = $("#systematic_name").val();
-            const Classification_alias = $("#Classification_alias").val();
-
-            $.ajax({
-              type: "post",
-              // url:'http://localhost:8080/api/v1/admin/category/edit',
-              url: BigNew.category_edit,
-              data: {
-                id: compile_id,
-                name: systematic_name,
-                slug: Classification_alias
-              },
-              success: function(response) {
-                //  alert(response.msg);
-                //关闭模态框
-                $("#myModal").modal("hide");
-                // 重新渲染
-                initial_with();
-
-                //清空模态里面的值
-                $("#systematic_name").val("");
-                $("#Classification_alias").val("");
-              }
-            });
-          };
-
-          $(".newcake").on("click", bianji);
         } else if (modalbtn === "新增分类") {
           $(".newcake").removeClass("btn-info");
           $(".newcake").addClass("btn-success");
           // 新增的那个函数
-          const addw = function() {
-            // 移除事件函数
-            $(".newcake").off('click',addw)
-            const systematic = $("#systematic_name").val();
-            const classification = $("#Classification_alias").val();
-            console.log(systematic);
-            console.log(classification);
-
-            console.log(e);
-            $.ajax({
-              type: "post",
-              url: BigNew.category_add,
-              data: {
-                name: systematic,
-                slug: classification
-              },
-              success: function(response) {
-                //关闭模态框
-                $("#myModal").modal("hide");
-                // 重新渲染
-                initial_with();
-                // 清空模态的值
-                $("#systematic_name").val("");
-                $("#Classification_alias").val("");
-              }
-            });
-          }
-          //新增事件
-          $(".newcake").on("click", addw);
         }
       });
+      //编辑事件函数
+      const bianji = function() {
+        const thisId = $(".newcake").attr("data-id");
+        //获取输入框的值
+        const systematic_name = $("#systematic_name").val();
+        const Classification_alias = $("#Classification_alias").val();
 
+        $.ajax({
+          type: "post",
+          // url:'http://localhost:8080/api/v1/admin/category/edit',
+          url: BigNew.category_edit,
+          data: {
+            id: thisId,
+            name: systematic_name,
+            slug: Classification_alias
+          },
+          success: function(response) {
+            //  alert(response.msg);
+            //关闭模态框
+            $("#myModal").modal("hide");
+            // 重新渲染
+            initial_with();
+          }
+        });
+      };
+      //编辑事件
+      $(".modal-dialog").on("click", ".btn-info", bianji);
+      //新增事件函数
+      const addw = function() {
+        const systematic = $("#systematic_name").val();
+        const classification = $("#Classification_alias").val();
+        console.log(systematic);
+        console.log(classification);
+        $.ajax({
+          type: "post",
+          url: BigNew.category_add,
+          data: {
+            name: systematic,
+            slug: classification
+          },
+          success: function(response) {
+            //关闭模态框
+            $("#myModal").modal("hide");
+            // 重新渲染
+            initial_with();
+            // 清空模态的值
+            $("#systematic_name").val("");
+            $("#Classification_alias").val("");
+          }
+        });
+      };
+      //新增事件
+      $(".modal-dialog").on("click", ".btn-success", addw);
 
       //删除事件
-      $('tbody').on('click','a',function(e){
-        
-        
-        if($(this).html() === '删除'){
-          console.log($(this).attr('data-id'));
-         
+      $("tbody").on("click", "a", function(e) {
+        if ($(this).html() === "删除") {
+          console.log($(this).attr("data-id"));
+
           //删除
           $.ajax({
             type: "post",
             url: BigNew.category_delete,
             data: {
-              id:$(this).attr('data-id')
+              id: $(this).attr("data-id")
             },
-            success: function (response) {
+            success: function(response) {
               //重新渲染
               initial_with();
             }
           });
-
         }
-        
-      })
+      });
       //刹!!
     });
   </script>
