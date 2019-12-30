@@ -41,15 +41,8 @@
               <td>奇趣事</td>
               <td>funny</td>
               <td class="text-center">
-                <a
-                 
-                  data-toggle="modal"
-                  class=" btn btn-info btn-xs"
-                  >编辑</a
-                >
-                <a class="btn btn-danger btn-xs"
-                  >删除</a
-                >
+                <a data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
+                <a class="btn btn-danger btn-xs">删除</a>
               </td>
             </tr>
           </tbody>
@@ -146,7 +139,7 @@
   </script>
   <script>
     $(function() {
-      const initial_with = function(){
+      const initial_with = function() {
         // 页面初始渲染
         $.ajax({
           type: "get",
@@ -157,90 +150,89 @@
             $("tbody").html(list);
           }
         });
-      }
-      initial_with()
+      };
+      initial_with();
 
+      // 2个点击同时是模态
+      $("#myModal").on("shown.bs.modal", function(e) {
+        const modalbtn = $(e.relatedTarget).html();
+        //  console.log(modalbtn);
+        $(".newcake").html(modalbtn);
+        console.log(modalbtn);
 
-    
-    // 2个点击同时是模态
-    $('#myModal').on('shown.bs.modal', function (e) {
-       const modalbtn = $(e.relatedTarget).html()
-      //  console.log(modalbtn);
-       $('.newcake').html(modalbtn)
-       console.log(modalbtn);
-       
-  if(modalbtn ==='编辑'){
-     $('.newcake').addClass('btn-info');
-     $('.newcake').removeClass('btn-success')
-     // 当前点击的id
-   const compile_id =  +($(e.relatedTarget).attr('data-id'))
-   
-   $('.newcake').on('click',function(){
-      //获取输入框的值
-    const systematic_name = $('#systematic_name').val()
-    const Classification_alias = $('#Classification_alias').val()
+        if (modalbtn === "编辑") {
+          $(".newcake").addClass("btn-info");
+          $(".newcake").removeClass("btn-success");
+          // 当前点击的id
+          const compile_id = +$(e.relatedTarget).attr("data-id");
+          // 编辑事件 函数
+          const bianji = function() {
+            //移除编辑事件函数
+            $(".newcake").off("click", bianji);
+            //获取输入框的值
+            const systematic_name = $("#systematic_name").val();
+            const Classification_alias = $("#Classification_alias").val();
 
-   
-    $.ajax({
-      type: "post",
-      // url:'http://localhost:8080/api/v1/admin/category/edit',
-      url:BigNew.category_edit,
-      data: {
-        id:compile_id,
-        name:systematic_name,
-        slug:Classification_alias
-      },
-      success: function (response) {
-      //  alert(response.msg);
-      //关闭模态框
-       $('#myModal').modal('hide')
-       // 重新渲染
-       initial_with()
+            $.ajax({
+              type: "post",
+              // url:'http://localhost:8080/api/v1/admin/category/edit',
+              url: BigNew.category_edit,
+              data: {
+                id: compile_id,
+                name: systematic_name,
+                slug: Classification_alias
+              },
+              success: function(response) {
+                //  alert(response.msg);
+                //关闭模态框
+                $("#myModal").modal("hide");
+                // 重新渲染
+                initial_with();
 
-       //清空模态里面的值
-       $('#systematic_name').val('')
-       $('#Classification_alias').val('')
-      }
-    });
-   
-  
-  })
-     
-  }else if(modalbtn==='新增分类'){
-    $('.newcake').removeClass('btn-info');
-     $('.newcake').addClass('btn-success')
-         //新增
-         $(".newcake").on("click", function() {
-        const systematic = $("#systematic_name").val();
-        const classification = $("#Classification_alias").val();
-        console.log(systematic);
-        console.log(classification);
-        
-        console.log(e);
-        $.ajax({
-          type: "post",
-          url: BigNew.category_add,
-          data: {
-            name:systematic,
-            slug:classification
-          },
-          success: function (response) {
-          //关闭模态框
-          $('#myModal').modal('hide')
-       // 重新渲染
-       initial_with()
-       // 清空模态的值
-       $('#systematic_name').val('')
-       $('#Classification_alias').val('')
+                //清空模态里面的值
+                $("#systematic_name").val("");
+                $("#Classification_alias").val("");
+              }
+            });
+          };
+
+          $(".newcake").on("click", bianji);
+        } else if (modalbtn === "新增分类") {
+          $(".newcake").removeClass("btn-info");
+          $(".newcake").addClass("btn-success");
+          // 新增的那个函数
+          const addw = function() {
+            // 移除事件函数
+            $(".newcake").off('click',addw)
+            const systematic = $("#systematic_name").val();
+            const classification = $("#Classification_alias").val();
+            console.log(systematic);
+            console.log(classification);
+
+            console.log(e);
+            $.ajax({
+              type: "post",
+              url: BigNew.category_add,
+              data: {
+                name: systematic,
+                slug: classification
+              },
+              success: function(response) {
+                //关闭模态框
+                $("#myModal").modal("hide");
+                // 重新渲染
+                initial_with();
+                // 清空模态的值
+                $("#systematic_name").val("");
+                $("#Classification_alias").val("");
+              }
+            });
           }
-        });
+          //新增事件
+          $(".newcake").on("click", addw);
+        }
       });
-  }
 
-})
-    
-    
-    
       //刹!!
     });
   </script>
