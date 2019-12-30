@@ -5,14 +5,15 @@ const token = localStorage.getItem('token')
 
  $.ajaxSetup({
     beforeSend(xhr){
-        // 禁止无令牌登陆
+
+        // 设置默认请求头 登陆页面除外
+        if( location.href.indexOf('login.html') === -1 ){
+            xhr.setRequestHeader('authorization',token)
+                    // 禁止无令牌登陆
         if(!token){
             alert('登陆异常')
             location.href = './login.html'
         }
-        // 设置默认请求头 登陆页面除外
-        if( location.href.indexOf('login.html') === -1 ){
-            xhr.setRequestHeader('authorization',token)
         }
 
     }
