@@ -132,6 +132,8 @@
     <script>
       $(function() {
           //冲
+          // 全局当前页面
+          let vaPage ;
           //分页器函数
        const paging  =  function(totalPages,startPage=1){
         $('#pagination-demo').twbsPagination('destroy');
@@ -144,9 +146,10 @@ $('#pagination-demo').twbsPagination({
         next:'Pgdn',
         last:'End',
         onPageClick: function (event, page) {
-          console.log(page);
           if(startPage !== page){
+          // console.log(page);
           article_assignment(page)
+          vaPage = page
         }}
     });
 }
@@ -169,7 +172,7 @@ $('#pagination-demo').twbsPagination({
 
 // 文章搜索函数
 // const article_search = function(id = 1){
-const article_assignment = function(id = 1){
+const article_assignment = function(id=1){
     $.ajax({
         type: "get",
         url: BigNew.article_query,
@@ -181,10 +184,14 @@ const article_assignment = function(id = 1){
             perpage:'10'
         },
         success: function (response) {
+          if(response.data.data.length === 1){
+            vaPage--
+          };
+          
             // console.log(response.data.totalCount);
             //获取当前的页面数量
             const totalPage = (response.data.totalPage);
-            paging(totalPage)
+            paging(totalPage,id)
             $('tbody').html(template('article_xran',response.data));
         }
     });
@@ -207,9 +214,10 @@ $('tbody').on('click','.btn-danger',function(){
        url: BigNew.article_delete,
        data: {id},
        success: function (response) {
-           console.log(response);
+          //  console.log(response);
            //重新渲染页面
-           article_assignment() 
+          //  console.log(vaPage);
+           article_assignment(vaPage)
        }
    });
    
