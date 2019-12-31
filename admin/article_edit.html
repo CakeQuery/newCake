@@ -71,7 +71,17 @@
 <script src="./js/http.js"></script>
 <script>
 
+const id = (location.href.split('=')[1])
 
+$.ajax({
+    type: "get",
+    url: BigNew.article_search,
+    data: {id},
+    success: function (response) {
+        console.log(response);
+        
+    }
+});
 
 </script>
 </html>

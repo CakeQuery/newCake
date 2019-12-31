@@ -167,7 +167,8 @@
 
 
 // 文章搜索函数
-const article_search = function(id = 1){
+// const article_search = function(id = 1){
+const article_assignment = function(id = 1){
     $.ajax({
         type: "get",
         url: BigNew.article_query,
@@ -186,16 +187,30 @@ const article_search = function(id = 1){
     });
 }
 // 调用文章搜索 初始渲染
-article_search()
+article_assignment()
 
 // 筛选 按钮
 $('#btnSearch').on('click',function(e){
     e.preventDefault()
     // 重新渲染
-    article_search()
+    article_assignment()
 })
 
-//
+//删除 按钮
+$('tbody').on('click','.btn-danger',function(){
+   const id =$(this).attr('data-id');
+   $.ajax({
+       type: "post",
+       url: BigNew.article_delete,
+       data: {id},
+       success: function (response) {
+           console.log(response);
+           //重新渲染页面
+           article_assignment() 
+       }
+   });
+   
+})
         //刹!
       });
     </script>
