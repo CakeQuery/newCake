@@ -26,7 +26,7 @@
           <div class="col-xs-6">
             <form class="form-inline">
               <select id="selCategory" name="" class="form-control input-sm">
-                <option>所有分类</option>
+                <option value="" >所有分类</option>
                 <option>未分类</option>
                 <option>奇趣事</option>
                 <option>会生活</option>
@@ -135,7 +135,7 @@
       >
       <a
         href="javascript:void(0);"
-        class="btn btn-danger btn-xs delete"
+        class="btn btn-danger btn-xs delete" data-id={{$value.id}}
         >删除</a
       >
     </td>
@@ -167,28 +167,35 @@
 
 
 // 文章搜索函数
-const article_search = function(){
+const article_search = function(id = 1){
     $.ajax({
         type: "get",
         url: BigNew.article_query,
         data: {
-            key:'',
-            type:'',
-            state:'',
-            page:'1',
+            // key:'',
+            type:$('#selCategory').val(),
+            state:$('#selStatus').val(),
+            page:id,
             perpage:'10'
         },
         success: function (response) {
             // console.log(response);
-            
             $('tbody').html(template('article_xran',response.data));
             
         }
     });
 }
-// 调用文章搜索
+// 调用文章搜索 初始渲染
 article_search()
 
+// 筛选 按钮
+$('#btnSearch').on('click',function(e){
+    e.preventDefault()
+    // 重新渲染
+    article_search()
+})
+
+//
         //刹!
       });
     </script>
