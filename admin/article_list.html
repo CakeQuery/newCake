@@ -82,29 +82,12 @@
             </tr>
           </tbody>
         </table>
-        <div   class="row text-center"></div>
+        <div   class="row text-center">
+              <!-- bott -->
+        <ul id="pagination-demo" class="pagination-sm"></ul>
 
         <!-- bott -->
-        <nav aria-label="Page navigation">
-          <ul class="pagination">
-            <li>
-              <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li><a href="javascript:;">1</a></li>
-            <li><a href="javascript:;">2</a></li>
-            <li><a href="javascript:;">3</a></li>
-            <li><a href="javascript:;">4</a></li>
-            <li><a href="javascript:;">5</a></li>
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <!-- bott -->
+        </div>
       </div>
     </div>
 
@@ -149,6 +132,24 @@
     <script>
       $(function() {
           //冲
+          //分页器函数
+       const paging  =  function(totalPages,startPage=1){
+        $('#pagination-demo').twbsPagination('destroy');
+$('#pagination-demo').twbsPagination({
+        totalPages: totalPages,
+        startPage:startPage,
+        visiblePages: 7,
+        first:'Home',
+        prev:'Pgup',
+        next:'Pgdn',
+        last:'End',
+        onPageClick: function (event, page) {
+          console.log(page);
+          if(startPage !== page){
+          article_assignment(page)
+        }}
+    });
+}
           //所有分类渲染
         $.ajax({
           type: "get",
@@ -180,9 +181,11 @@ const article_assignment = function(id = 1){
             perpage:'10'
         },
         success: function (response) {
-            // console.log(response);
+            // console.log(response.data.totalCount);
+            //获取当前的页面数量
+            const totalPage = (response.data.totalPage);
+            paging(totalPage)
             $('tbody').html(template('article_xran',response.data));
-            
         }
     });
 }
@@ -211,6 +214,7 @@ $('tbody').on('click','.btn-danger',function(){
    });
    
 })
+   
         //刹!
       });
     </script>
