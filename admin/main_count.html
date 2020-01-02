@@ -66,7 +66,7 @@
         type: "get",
         url: BigNew.data_article,
         success: function(response) {
-        //   console.log("折线图",response);
+          //   console.log("折线图",response);
           loadEchars(response);
           function loadEchars(obj) {
             // 基于准备好的dom，初始化echarts实例
@@ -160,31 +160,44 @@
 
     <!-- 环形图 -->
     <script>
-        // category
-        $.ajax({
-            type: "get",
-            url: BigNew.data_category,
-            success: function (response) {
-        console.log('环形图',response);
-            }
-            
-        });
-                    // 基于准备好的dom，初始化echarts实例
-      var myChart1 = echarts.init(document.getElementById("pie_show"));
+      // category
+      $.ajax({
+        type: "get",
+        url: BigNew.data_category,
+        success: function(response) {
+          console.log("环形图", response);
+          const nameM = response.date.map(function(item) {
+            return item.name;
+          });
+          console.log(nameM);
+          let namearti = [];
+          // 对象1
+          for (i in response.date) {
+            namearti[i] = {
+              value: response.date[i].articles,
+              name: response.date[i].name
+            };
+          }
+          annular(nameM,namearti);
+        }
+      });
+      // 基于准备好的dom，初始化echarts实例
+      function annular(nameM,namearti) {
+        var myChart1 = echarts.init(document.getElementById("pie_show"));
 
-      option1 = {
-        title: {
-          left: "center",
-          text: "分类文章数量比"
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b}: {c} ({d}%)"
-        },
-        legend: {
-          orient: "horizontal",
-          x: "center",
-          data: ["爱生活", "趣美味", "爱旅行", "爱电影", "爱游泳"],
+        option1 = {
+          title: {
+            left: "center",
+            text: "分类文章数量比"
+          },
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+          },
+          legend: {
+            orient: "horizontal",
+            x: "center",
+          data: nameM,
           top: 30
         },
         color: ["#5885e8", "#13cfd5", "#00ce68", "#ff9565", "#20ff19"],
@@ -203,19 +216,16 @@
                 }
               }
             },
-            data: [
-              { value: 335, name: "爱生活" },
-              { value: 310, name: "趣美味" },
-              { value: 234, name: "爱旅行" },
-              { value: 135, name: "爱电影" },
-              { value: 548, name: "爱游泳" }
-            ]
-          }
-        ]
-      };
-      // 使用刚指定的配置项和数据显示图表。
-      myChart1.setOption(option1);
-  
+            data: 
+              // namearti
+              namearti
+              
+            }
+          ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);
+      }
     </script>
     <!-- 柱状图 -->
     <script>
