@@ -14,6 +14,10 @@
     <script src="./libs/jquery-1.12.4.min.js"></script>
     <!-- 模板引擎 -->
     <script src="./libs/template-web.js"></script>
+    <!-- 引入时间插件 -->
+    <link type="text/css" rel="stylesheet" href="./libs/jedate/css/jeDate-test.css">
+    <link rel="stylesheet" href="./libs/jedate/css/jedate.css">
+    <script src="./libs/jedate/js/jedate.js"></script>
 </head>
 
 <body>
@@ -51,6 +55,12 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">发布时间：</label>
                     <div class="col-sm-4">
+                        <div class="jeitem">
+                            <input type="text" class="jeinput" id="testico" placeholder="YYYY-MM-DD">
+                            <div class="icons jebtns"
+                                onclick="jeDate('#testico',{trigger:false,format: 'YYYY-MM-DD',theme: { bgcolor: '#00A680', pnColor: '#00DDAA' }})">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -60,7 +70,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success btn-edit">修改</button>
+                        <button type="submit" class="btn btn-success btn-edit" id="btn">修改</button>
                         <button type="submit" class="btn btn-default btn-draft">存为草稿</button>
                     </div>
                 </div>
@@ -71,17 +81,30 @@
 <script src="./js/http.js"></script>
 <script>
 
-const id = (location.href.split('=')[1])
+    const id = (location.href.split('=')[1])
+    $.ajax({
+        type: "get",
+        url: BigNew.article_search,
+        data: { id },
+        success: function (response) {
+            console.log(response);
 
-$.ajax({
-    type: "get",
-    url: BigNew.article_search,
-    data: {id},
-    success: function (response) {
-        console.log(response);
-        
-    }
-});
+        }
+    });
 
 </script>
+<!-- 时间插件 -->
+<script>
+    //加载日期插件
+    jeDate('#testico', {
+        trigger: 'click',    //是否为内部触发事件，默认为内部触发事件
+        theme: { bgcolor: "#00A680", pnColor: "#00DDAA" },//绿色主题
+        format: "YYYY-MM-DD",//日期格式
+        isinitVal: true,   //是否初始化时间，默认不初始化时间
+    });
+    document.querySelector('#btn').onclick = function () {
+        console.log(document.querySelector('#testico').value);
+    };
+</script>
+
 </html>
