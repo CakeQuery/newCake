@@ -132,6 +132,7 @@
                             // 创建 FormData 对象
                             const fd = new FormData($('#form')[0]);
                             // 追加文章
+                            //获取富文本内容
                             fd.append('content', tinyMCE.activeEditor.getContent());
                             fd.append('state', state);
                             $.ajax({
@@ -157,7 +158,7 @@
 
 
 
-                        //加载日期插件
+                        // 加载日期插件
                         jeDate('#testico', {
                             trigger: 'click',
                             theme: { bgcolor: "#00A680", pnColor: "#00DDAA" },//绿色主题
@@ -176,8 +177,9 @@
                     tinymce.init({
                         selector: '#mytextarea',
                         language: 'zh_CN',
-                        width: 1200,
-                        height: 300,
+                        directionality: 'ltr',
+                        browser_spellcheck: true,
+                        contextmenu: false,
                         plugins: [
                             'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
                             'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
