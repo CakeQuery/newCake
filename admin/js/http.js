@@ -41,6 +41,9 @@ const token = localStorage.getItem('token')
         comment_pass:    baseURL + '/admin/comment/pass',//文章评论通过
         comment_reject:  baseURL + '/admin/comment/reject',//文章评论不通过
         comment_delete:  baseURL + '/admin/comment/delete',//文章评论删除
+        index_article:  baseURL + '/index/article',//文章详细内容
+        index_get_comment:  baseURL + '/index/get_comment',//发表评论
+        index_post_comment:  baseURL + '/index/post_comment',//发表评论
     };
 
     //暴露接口
