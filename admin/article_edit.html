@@ -124,9 +124,9 @@
         $.ajax({
             type: 'get',
             url: BigNew.category_list,
-            success: function (backData) {
-                if (backData.code === 200) {
-                    $('select.category').html(template('cat_list', backData))
+            success: function (res) {
+                if (res.code === 200) {
+                    $('select.category').html(template('cat_list', res))
                 }
             }
         });
@@ -137,21 +137,21 @@
             data: {
                 id: id
             },
-            success: function (backData) {
-                if (backData.code === 200) {
+            success: function (res) {
+                if (res.code === 200) {
 
-                    $('input.title').val(backData.data.title); //文章标题
-                    $('.article_cover').attr('src', backData.data.cover); //文章封面
-                    $('select.category').val(backData.data.categoryId); //文章类别
-                    $('#testico').val(backData.data.date); //时间.
+                    $('input.title').val(res.data.title); //文章标题
+                    $('.article_cover').attr('src', res.data.cover); //文章封面
+                    $('select.category').val(res.data.categoryId); //文章类别
+                    $('#testico').val(res.data.date); //时间.
 
-                    // $('input.title').val(backData.data.title);
-                    // $('.article_cover').attr('src',backData.data.cover);
-                    // $('select.category').val(backData.data.categoryId);
-                    // $('#testico').val(backData.data.date);
+                    // $('input.title').val(res.data.title);
+                    // $('.article_cover').attr('src',res.data.cover);
+                    // $('select.category').val(res.data.categoryId);
+                    // $('#testico').val(res.data.date);
 
                     setTimeout(function () {
-                        tinymce.activeEditor.setContent(backData.data.content)
+                        tinymce.activeEditor.setContent(res.data.content)
                     }, 200);
 
                 }
@@ -194,12 +194,12 @@
                 data: fd,
                 contentType: false,
                 processData: false,
-                success: function (backData) {
-                    if (backData.code === 200) {
+                success: function (res) {
+                    if (res.code === 200) {
                         alert('修改成功')
                         window.history.back();
                     } else {
-                      alert(backData.msg);
+                        alert(res.msg);
                     }
 
                 }
