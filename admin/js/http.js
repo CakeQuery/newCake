@@ -61,6 +61,10 @@
         index_rank: baseURL + '/index/rank',//热门排行
         index_latest_commen: baseURL + '/index/latest_commen',//最新评论
         index_attention: baseURL + '/index/attention',//焦点关注
+        index_search: baseURL + '/index/search',     // 前台文章搜索,
+        index_latest_comment: baseURL + '/index/latest_comment',  // 前台首页最新评论
+        indexRank: baseURL + '/index/rank',   // 文章热门排行
+        indexAttention: baseURL + '/index/attention',  //焦点关注
 
     };
 

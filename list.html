@@ -152,7 +152,7 @@
         <div class="right_con setfl">
             <div class="common_wrap">
                 <h3><i class="fa fa-bar-chart"></i> 一周热门排行</h3>
-                <ul class="content_list">
+                <ul class="content_list hotrank_list">
                     <li><span class="first">1</span><a href="#">神奇的水滴摄影，泡泡中的世界泡泡中的世界</a></li>
                     <li><span class="second">2</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
                     <li><span class="third">3</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
@@ -227,6 +227,58 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+    <script src="./admin/js/http.js"></script>
+
+    <!-- 文章列表模板 -->
+    <script id="news" type="text/html">
+        {{each data}}
+        <div class="common_news_list">
+            <a href="#" class="list_pic"><img src={{$value.cover}} alt=""></a>
+            <h4><a href="article.html?id={{$value.id}}">{{$value.title}}</a></h4>
+            <p>{{$value.content}}
+            </p>
+            <div class="new_info">
+                <span>标签：{{$value.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{$value.read}} )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{$value.comments}} )</span>
+                <b>发布于 {{$value.date}}</b>
+            </div>
+        </div>
+        {{/each}}   
+    </script>
+
+    <script>
+        $(function () {
+
+            // 获取搜索内容
+            $('.search_btn').click(function () {
+                var text = $('.search_txt').val();
+                $.ajax({
+                    url: BigNew.index_search,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        page: 1,
+                        perpage: 10,
+                        key: text
+                    },
+                    success: function (backData) {
+                        console.log(backData)
+
+                        if (backData.data.data.length === 0) {
+                            alert("未搜索到您输入的内容");
+                            return;
+                        } else {
+                            $('.setfr').html(template('news', backData.data))
+                        }
+
+                    }
+                })
+            });
+            // 页面一加载,就搜索全部
+            $('.search_btn').trigger('click');
+
+
+        })
+    </script>
 </body>
 
 </html>
