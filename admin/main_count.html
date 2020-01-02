@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>图表统计</title>
-    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/iconfont.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <script src="./libs/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="./libs/echarts.js"></script>
-</head>
+  </head>
 
-<body>
-    <div class="container-fluid">
+  <body>
+    <!-- <div class="container-fluid">
         <div class="row spannel_list">
             <div class="col-sm-3 col-xs-6">
                 <div class="spannel">
@@ -57,11 +56,110 @@
 
     <div class="container-fluid">
         <div class="column_pannel" id="column_show"></div>
-    </div>
+    </div> -->
 
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script>
+      var myChart = echarts.init(document.getElementById("main"));
+
+      var base = +new Date(1968, 9, 3);
+      var oneDay = 24 * 3600 * 1000;
+      var date = [];
+
+      var data = [Math.random() * 300];
+
+      for (var i = 1; i < 20000; i++) {
+        var now = new Date((base += oneDay));
+        date.push(
+          [now.getFullYear(), now.getMonth() + 1, now.getDate()].join("/")
+        );
+        data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
+      }
+
+      option = {
+        tooltip: {
+          trigger: "axis",
+          position: function(pt) {
+            return [pt[0], "10%"];
+          }
+        },
+        title: {
+          left: "center",
+          text: "月新增文章数"
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none"
+            },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: date
+        },
+        yAxis: {
+          type: "value",
+          boundaryGap: [0, "100%"]
+        },
+        dataZoom: [
+          {
+            type: "inside",
+            start: 0,
+            end: 10
+          },
+          {
+            start: 0,
+            end: 10,
+            handleIcon:
+              "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
+            handleSize: "80%",
+            handleStyle: {
+              color: "#fff",
+              shadowBlur: 3,
+              shadowColor: "rgba(0, 0, 0, 0.6)",
+              shadowOffsetX: 2,
+              shadowOffsetY: 2
+            }
+          }
+        ],
+        series: [
+          {
+            name: "模拟数据",
+            type: "line",
+            smooth: true,
+            symbol: "none",
+            sampling: "average",
+            itemStyle: {
+              color: "rgb(255, 70, 131)"
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: "rgb(255, 158, 68)"
+                },
+                {
+                  offset: 1,
+                  color: "rgb(255, 70, 131)"
+                }
+              ])
+            },
+            data: data
+          }
+        ]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    </script>
 
     <!-- 折线图 -->
-    <script>
+    <!-- <script>
         var json = '{"code":200,"msg":"获取成功","date":[{"date":"2019-05-20","count":23},{"date":"2019-05-21","count":19},{"date":"2019-05-22","count":29},{"date":"2019-05-23","count":24},{"date":"2019-05-24","count":28},{"date":"2019-05-25","count":28},{"date":"2019-05-26","count":19},{"date":"2019-05-27","count":25},{"date":"2019-05-28","count":25}]}';
         var obj = JSON.parse(json);
         loadEchars(obj);
@@ -146,10 +244,10 @@
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
         }
-    </script>
+    </script> -->
 
     <!-- 环形图 -->
-    <script>
+    <!-- <script>
         // 基于准备好的dom，初始化echarts实例
         var myChart1 = echarts.init(document.getElementById('pie_show'));
 
@@ -196,9 +294,9 @@
         };
         // 使用刚指定的配置项和数据显示图表。
         myChart1.setOption(option1);
-    </script>
+    </script> -->
     <!-- 柱状图 -->
-    <script>
+    <!-- <script>
         // 基于准备好的dom，初始化echarts实例
         var myChart2 = echarts.init(document.getElementById('column_show'));
 
@@ -269,7 +367,6 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart2.setOption(option2);
-    </script>
-</body>
-
+    </script> -->
+  </body>
 </html>
