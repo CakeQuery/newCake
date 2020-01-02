@@ -227,6 +227,50 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+    <script src="./admin/js/http.js"></script>
+
+    <!-- template 文章列表模板 -->
+    <script id="news" type="text/html">
+        {{each data.data}}
+        <div class="common_news_list">
+            <a href="#" class="list_pic"><img src={{$value.cover}} alt=""></a>
+            <h4><a href="article.html?id={{$value.id}}">{{$value.title}}</a></h4>
+            <p>{{$value.content}}
+            </p>
+            <div class="new_info">
+                <span>标签：{{$value.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{$value.read}} )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{$value.comments}} )</span>
+                <b>发布于 {{$value.date}}</b>
+            </div>
+        </div>
+        {{/each}}   
+    </script>
+    <script>
+        $(function () {
+
+            // 搜索
+            $('.search_btn').click(function () {
+                var text = $('.search_txt').val();
+                $.ajax({
+                    url: BigNew.index_search,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        page: 1,
+                        perpage: 10,
+                        key: text
+                    },
+                    success: function (backData) {
+                        //console.log(backData)
+                        $('.setfr').html(template('news', backData))
+                    }
+                })
+            });
+
+            $('.search_btn').trigger('click');
+
+
+        })
+    </script>
 </body>
 
 </html>
