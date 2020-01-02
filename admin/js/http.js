@@ -65,6 +65,9 @@
         index_latest_comment: baseURL + '/index/latest_comment',  // 前台首页最新评论
         indexRank: baseURL + '/index/rank',   // 文章热门排行
         indexAttention: baseURL + '/index/attention',  //焦点关注
+        index_article: baseURL + '/index/article',//文章详细内容
+        index_get_comment: baseURL + '/index/get_comment',//发表评论
+        index_post_comment: baseURL + '/index/post_comment',//发表评论
 
     };
 
