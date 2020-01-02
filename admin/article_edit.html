@@ -10,11 +10,8 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <!--引入jq -->
-    <script src="./libs/jquery-1.12.4.min.js"></script>
     <!-- 引入模板引擎 -->
     <script src="./libs/template-web.js"></script>
-    <!-- 引入jsData日期插件 -->
     <link rel="stylesheet" href="./libs/jedate/css/jeDate-test.css">
     <link rel="stylesheet" href="./libs/jedate/css/jedate.css">
     <script src="./libs/jedate/js/jedate.js"></script>
@@ -73,7 +70,11 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="mytextarea" placeholder="文章内容" value="文章内容">
+                        <!-- 富文本 -->
+                        <form method="post">
+                            <textarea id="mytextarea"></textarea>
+                        </form>
+                        <!-- 富文本 -->
                     </div>
                 </div>
                 <div class="form-group">
@@ -150,9 +151,34 @@
                     // $('select.category').val(res.data.categoryId);
                     // $('#testico').val(res.data.date);
 
-                    setTimeout(function () {
-                        tinymce.activeEditor.setContent(res.data.content)
-                    }, 200);
+                    // 富文本js
+                    // <!--初始化tinymce-->
+                    tinymce.init({
+                        selector: '#mytextarea',
+                        language: 'zh_CN',
+                        directionality: 'ltr',
+                        browser_spellcheck: true,
+                        contextmenu: false,
+                        plugins: [
+                            "advlist autolink lists link image charmap print preview anchor",
+                            "searchreplace visualblocks code fullscreen",
+                            "insertdatetime media table contextmenu paste imagetools wordcount",
+                            "code"
+                        ],
+                        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code",
+                        height: 350,
+                    });
+                    /*tinymce.activeEditor.uploadImages(function(success) {
+                        $.post('ajax/post.do', tinymce.activeEditor.getContent()).done(function() {
+                            console.log("Uploaded images and posted content as an ajax request.");
+                        });
+                    });*/
+                    // 富文本js
+
+
+
+
+
 
                 }
             }
