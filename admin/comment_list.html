@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/main.css">
   <script src="./libs/jquery-1.12.4.min.js"></script>
   <script src="./libs/template-web.js"></script>
+  <script src="./libs/jquery.twbsPagination.js"></script>
 </head>
 
 <body>
@@ -142,7 +143,7 @@
         </tbody>
       </table>
       <div class="row text-center">
-        <ul class="pagination pagination-sm">
+        <!-- <ul class="pagination pagination-sm">
           <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
           <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
           <li class="page-item active"><a href="#" class="page-link">1</a></li>
@@ -155,11 +156,150 @@
           <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
           <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
         </ul>
-        <ul id="pagination" class="pagination-sm"></ul>
+        <ul id="pagination" class="pagination-sm"></ul> -->
+        <ul id="pagination-demo" class="pagination-sm"></ul>
       </div>
 
     </div>
   </div>
+  <script src="./js/http.js"></script>
+  <script>
+    //全局当前页
+    let currenPage;
+    //渲染页面
+    function resetCommentList(page=1){
+      $.ajax({
+        url: BigNew.comment_list,
+        data: {
+          page: page,
+          perpage: 15
+        },
+        success: function (res) {
+          // console.log(res)
+          //映射
+          const htmlstr = res.data.data.map(function (item) {
+            return `
+          <tr>
+            <td>${item.author}</td>
+            <td>${item.content}</td>
+            <td>${item.title}</td>
+            <td>${item.date} ${item.time}</td>
+            <td>${item.state}</td>
+            <td class="text-center">
+              <a id="one" class="btn btn-warning btn-xs" data-id="${item.id}">拒绝</a>
+              <a id="two" class="btn btn-danger btn-xs" data-id="${item.id}">删除</a>
+            </td>
+          </tr>`
+          })
+          //初步渲染页面
+          $("tbody").html(htmlstr)
+          //找到第一个按钮
+          const firstBtn = $("tbody .text-center #one")
+          // console.log(firstBtn[2])
+          //根据不同状态来修改页面
+          res.data.data.forEach(function(item,index){
+            // console.log(index)
+            if (item.state === "待审核") {
+              firstBtn.eq(index).removeClass("btn-warning").addClass("btn-info").text("批准")
+            } else if (item.state === "已拒绝") {
+              firstBtn.eq(index).remove()
+            }
+          })
+          //总页数
+          const totalPage = res.data.totalPage
+          //分页器开始页等于当前页
+          const startPage = page
+          //调用分页器
+          resetPage(totalPage,startPage)
+        }
+      })
+    }
+
+    //调用渲染
+    resetCommentList()
+    //分页器
+    function resetPage(totalPage,startPage){
+      //设置新的总页数,每次调用都会刷新
+      $('#pagination-demo').twbsPagination("destroy")
+      $('#pagination-demo').twbsPagination({
+        //总页数
+        totalPages: totalPage,
+        //显示多少个页数
+        visiblePages: 7,
+        //起始页
+        startPage: startPage,
+        first:"首页",
+        prev:"上一页",
+        next:"下一页",
+        last:"尾页",
+        onPageClick: function (event, page) {
+          // console.log(page)
+          //因为默认点击一次,判断当前页与起始页不相同时
+          if(startPage!==page){
+          //调用渲染
+          resetCommentList(page)
+          //使全局页
+          currentPage = page;
+          }
+          // $('#page-content').text('Page ' + page);
+        }
+      });
+    }
+
+      //点击事件
+      $("tbody").on("click", "#one", function () {
+        //通过评论事件
+        if($(this).text()==="批准"){
+          $.ajax({
+            type: "post",
+            url: BigNew.comment_pass,
+            data: {
+              id: $(this).attr("data-id")
+            },
+            success: function (res) {
+              resetCommentList(currentPage)
+              alert(res.msg)
+            }
+          })
+        }
+
+        //审核不通过
+          else{
+          $.ajax({
+            type:"post",
+            url: BigNew.comment_reject,
+            data:{
+              id: $(this).attr("data-id")
+            },
+            success:function(res){
+              resetCommentList(currentPage)
+              alert(res.msg)
+            }
+          })
+        }
+      })
+
+      //删除评论
+      $("tbody").on("click","#two",function(){
+        $.ajax({
+          type:"post",
+          url: BigNew.comment_delete,
+          data:{
+            id: $(this).attr("data-id")
+          },
+          success:function(res){
+            //判断当删除最后一行时跳转回前一页
+            if($("tr").length <=2){
+              // console.log($("tr").length)
+              currentPage--
+            }
+            resetCommentList(currentPage)
+            alert(res.msg)
+          }
+        })
+      })
+  </script>
+
 </body>
 
 </html>
