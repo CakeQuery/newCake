@@ -133,7 +133,9 @@
       $(function() {
           //冲
           // 全局当前页面
-          let vaPage ;
+          let vaPage = 1 ;
+          // 全局全部页面数量
+          let numPage = 1;
           //分页器函数
        const paging  =  function(totalPages,startPage=1){
         $('#pagination-demo').twbsPagination('destroy');
@@ -149,8 +151,10 @@ $('#pagination-demo').twbsPagination({
           if(startPage !== page){
           // console.log(page);
           article_assignment(page)
-          vaPage = page
-        }}
+          vaPage = page;
+          
+        }
+        }
     });
 }
           //所有分类渲染
@@ -184,15 +188,21 @@ const article_assignment = function(id=1){
             perpage:'10'
         },
         success: function (response) {
-          if(response.data.data.length === 1){
-            vaPage--
-          };
+          numPage = response.data.totalPage;
           
             // console.log(response.data.totalCount);
             //获取当前的页面数量
             const totalPage = (response.data.totalPage);
             paging(totalPage,id)
             $('tbody').html(template('article_xran',response.data));
+
+  if(numPage != 1){
+          if(response.data.data.length === 1){
+            vaPage--
+          };
+        }
+            console.log(vaPage);
+
         }
     });
 }
@@ -214,6 +224,12 @@ $('tbody').on('click','.btn-danger',function(){
        url: BigNew.article_delete,
        data: {id},
        success: function (response) {
+         console.log(response.msg);
+         
+         if(response.msg !== '文章删除成功'){
+  alert('无数据')
+  location.reload()           
+         }
           //  console.log(response);
            //重新渲染页面
           //  console.log(vaPage);
