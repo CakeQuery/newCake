@@ -42,7 +42,9 @@
         comment_reject: baseURL + '/admin/comment/reject',//文章评论不通过
         comment_delete: baseURL + '/admin/comment/delete',//文章评论删除
         index_search: baseURL + '/index/search',     // 前台文章搜索,
-
+        index_latest_comment: baseURL + '/index/latest_comment',  // 前台首页最新评论
+        indexRank: baseURL + '/index/rank',   // 文章热门排行
+        indexAttention: baseURL + '/index/attention',  //焦点关注
 
     };
 
