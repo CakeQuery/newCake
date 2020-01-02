@@ -66,7 +66,7 @@
         type: "get",
         url: BigNew.data_article,
         success: function(response) {
-          console.log("折线图",response);
+        //   console.log("折线图",response);
           loadEchars(response);
           function loadEchars(obj) {
             // 基于准备好的dom，初始化echarts实例
@@ -165,7 +165,10 @@
             type: "get",
             url: BigNew.category,
             success: function (response) {
-                console.log('环形图',response);
+        console.log('环形图',response);
+            }
+            
+        });
                     // 基于准备好的dom，初始化echarts实例
       var myChart1 = echarts.init(document.getElementById("pie_show"));
 
@@ -212,8 +215,6 @@
       };
       // 使用刚指定的配置项和数据显示图表。
       myChart1.setOption(option1);
-            }
-        });
   
     </script>
     <!-- 柱状图 -->

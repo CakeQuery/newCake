@@ -45,7 +45,6 @@ const token = localStorage.getItem('token')
         data_article :baseURL + '/admin/data/article',
         data_category :baseURL + '/admin/data/category',
         data_visit :baseURL + '/admin/data/visit',
-        data_category :baseURL + '/admin/data/category',
     };
 
     //暴露接口
