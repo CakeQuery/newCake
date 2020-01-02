@@ -10,10 +10,19 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <!-- jq -->
+    <!--引入jq -->
     <script src="./libs/jquery-1.12.4.min.js"></script>
-    <!-- 模板引擎 -->
+    <!-- 引入模板引擎 -->
     <script src="./libs/template-web.js"></script>
+    <!-- 引入jsData日期插件 -->
+    <link rel="stylesheet" href="./libs/jedate/css/jeDate-test.css">
+    <link rel="stylesheet" href="./libs/jedate/css/jedate.css">
+    <script src="./libs/jedate/js/jedate.js"></script>
+    <!-- 引入tinymce富文本编辑器插件 -->
+    <script src="./libs/tinymce/tinymce.min.js"></script>
+    <!-- jsData + tinymce 配置文件 -->
+    <script src="./libs/config.js"></script>
+
 </head>
 
 <body>
@@ -67,21 +76,129 @@
             </form>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">温馨提醒</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="./js/http.js"></script>
-<script>
-
-const id = (location.href.split('=')[1])
-
-$.ajax({
-    type: "get",
-    url: BigNew.article_search,
-    data: {id},
-    success: function (response) {
-        console.log(response);
-        
-    }
-});
-
+<script id="cat_list" type="text/html">
+    {{each data v}}
+    <option value="{{v.id}}">{{v.name}}</option>
+    {{/each}}
 </script>
+<script>
+    $(function () {
+
+        //获取文章id值
+        const id = (location.href.split('=')[1]);
+        // console.log(id);
+
+        //加载文章类别
+        $.ajax({
+            type: 'get',
+            url: BigNew.category_list,
+            success: function (backData) {
+                if (backData.code === 200) {
+                    $('select.category').html(template('cat_list', backData))
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'get',
+            url: BigNew.article_search,
+            data: {
+                id: id
+            },
+            success: function (backData) {
+                if (backData.code === 200) {
+
+                    $('input.title').val(backData.data.title); //文章标题
+                    $('.article_cover').attr('src', backData.data.cover); //文章封面
+                    $('select.category').val(backData.data.categoryId); //文章类别
+                    $('#testico').val(backData.data.date); //时间.
+
+                    // $('input.title').val(backData.data.title);
+                    // $('.article_cover').attr('src',backData.data.cover);
+                    // $('select.category').val(backData.data.categoryId);
+                    // $('#testico').val(backData.data.date);
+
+                    setTimeout(function () {
+                        tinymce.activeEditor.setContent(backData.data.content)
+                    }, 200);
+
+                }
+            }
+        });
+
+
+        $('#inputCover').change(function () {
+
+            var file = this.files[0];
+
+            var url = URL.createObjectURL(file);
+
+            $('.article_cover').attr('src', url);
+        });
+
+
+        //发布
+        $('.btn-edit').click(function (e) {
+            e.preventDefault();
+            editArticlie('发布成功');
+        })
+
+        //存草稿
+        $(".btn-draft").click(function (e) {
+            e.preventDefault();
+            editArticlie('已存为草稿');
+        })
+
+
+
+        function editArticlie(state) {
+            var fd = new FormData($('#form')[0]);
+            fd.append('content', tinyMCE.activeEditor.getContent());
+            fd.append('id', id);
+            fd.sppend('state', state);
+            $.ajax({
+                url: bigNew.article_edit,
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (backData) {
+                    if (backData.code === 200) {
+                        $("#myModal .modal-body").html('修改成功');
+                        window.history.back();
+                    } else {
+                        $("#myModal .modal-body").html(backData.msg);
+                    }
+
+                }
+            })
+        }
+
+
+    })
+</script>
+
 </html>
